@@ -16,6 +16,8 @@ CREATE TABLE "Song" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "name" TEXT NOT NULL,
     "artistId" INTEGER NOT NULL,
+    "duration" INTEGER NOT NULL,
+    "url" TEXT NOT NULL,
 
     CONSTRAINT "Song_pkey" PRIMARY KEY ("id")
 );
@@ -36,7 +38,7 @@ CREATE TABLE "Playlist" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "name" TEXT NOT NULL,
-    "userId" INTEGER,
+    "userId" INTEGER NOT NULL,
 
     CONSTRAINT "Playlist_pkey" PRIMARY KEY ("id")
 );
@@ -51,6 +53,9 @@ CREATE TABLE "_PlaylistToSong" (
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Artist_name_key" ON "Artist"("name");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "_PlaylistToSong_AB_unique" ON "_PlaylistToSong"("A", "B");
 
 -- CreateIndex
@@ -60,7 +65,7 @@ CREATE INDEX "_PlaylistToSong_B_index" ON "_PlaylistToSong"("B");
 ALTER TABLE "Song" ADD CONSTRAINT "Song_artistId_fkey" FOREIGN KEY ("artistId") REFERENCES "Artist"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Playlist" ADD CONSTRAINT "Playlist_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Playlist" ADD CONSTRAINT "Playlist_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_PlaylistToSong" ADD FOREIGN KEY ("A") REFERENCES "Playlist"("id") ON DELETE CASCADE ON UPDATE CASCADE;
