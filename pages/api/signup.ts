@@ -4,11 +4,11 @@ import cookie from "cookie";
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../lib/prisma";
 
+const TOKEN_SECRET = "sing-bird-sing";
+
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const salt = bcrypt.genSaltSync();
   const { email, password } = req.body;
-
-  console.log("req.body", req.body);
 
   let user;
 
@@ -31,7 +31,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       id: user.id,
       time: Date.now(),
     },
-    "hello",
+    TOKEN_SECRET,
     { expiresIn: "8h" }
   );
 
